@@ -100,13 +100,33 @@ class ProduitsManagementApplicationTests {
 	@Test
 	public void testFindByCategorie(){
 		Categorie cat = new Categorie();
-		cat.setIdCat(1L);
+		cat.setIdCat(2L);
 
 		List<Produit> prods = produitRepository.findByCategorie(cat);
 		for (Produit p :prods){
 			System.out.println(p);
 		}
-
+	}
+	@Test
+	public void testFindByCategorieIdCat(){
+		List<Produit> prods = produitRepository.findByCategorieIdCat(2L);
+		for (Produit p: prods){
+			System.out.println(p);
+		}
 	}
 
+	@Test
+	public void testFindByOrderByNomProduitAsc(){
+		List<Produit> prods = produitRepository.findByOrderByNomProduitAsc();
+		for (Produit p: prods){
+			System.out.println(p);
+		}
+	}
+	@Test
+	public void testTrierProduitsNomsPrix(){
+		List<Produit> prods = produitRepository.trierProduitsNomsPrix();
+		for (Produit p: prods){
+			System.out.println(p);
+		}
+	}
 }
