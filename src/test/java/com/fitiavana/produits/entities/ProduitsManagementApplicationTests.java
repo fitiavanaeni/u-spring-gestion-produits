@@ -118,9 +118,7 @@ class ProduitsManagementApplicationTests {
 	@Test
 	public void testFindByOrderByNomProduitAsc(){
 		List<Produit> prods = produitRepository.findByOrderByNomProduitAsc();
-		for (Produit p: prods){
-			System.out.println(p);
-		}
+		prods.forEach(System.out::println);
 	}
 	@Test
 	public void testTrierProduitsNomsPrix(){
