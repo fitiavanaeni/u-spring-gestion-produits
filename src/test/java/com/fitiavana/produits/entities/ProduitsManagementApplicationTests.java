@@ -15,7 +15,7 @@ class ProduitsManagementApplicationTests {
 	private ProduitRepository produitRepository;
 	@Test
 	public void testCreateProduit() {
-		Produit prod = new Produit("PC HP",1200.50,new Date());
+		Produit prod = new Produit("PC THINKPAD",1800.50,new Date());
 		produitRepository.save(prod);
 	}
 	@Test
@@ -53,8 +53,8 @@ class ProduitsManagementApplicationTests {
 	}
 
 	@Test
-	public void testFindByNomProduitContains(){
-		List<Produit> prods = produitRepository.findByNomProduitContains("P");
+	public void testFindByNomProdluitContains(){
+		List<Produit> prods = produitRepository.findByNomProduitContains("A");
 		for(Produit p : prods) {
 			System.out.println(p);
 		}
