@@ -20,10 +20,11 @@ public class Produit {
     public Produit() {
     }
 
-    public Produit(String nomProduit, Double prixProduit, Date dateCreation) {
+    public Produit(String nomProduit, Double prixProduit, Date dateCreation, Categorie categorie) {
         this.nomProduit = nomProduit;
         this.prixProduit = prixProduit;
         this.dateCreation = dateCreation;
+        this.categorie = categorie;
     }
 
     public Long getIdProduit() {
