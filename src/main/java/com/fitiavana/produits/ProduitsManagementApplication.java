@@ -1,5 +1,6 @@
 package com.fitiavana.produits;
 
+import com.fitiavana.produits.entities.Categorie;
 import com.fitiavana.produits.entities.Produit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +19,6 @@ public class ProduitsManagementApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		repositoryRestConfiguration.exposeIdsFor(Produit.class);
+		repositoryRestConfiguration.exposeIdsFor(Produit.class, Categorie.class);
 	}
 }
