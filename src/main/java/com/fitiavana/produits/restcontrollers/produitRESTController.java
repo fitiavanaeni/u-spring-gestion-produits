@@ -37,7 +37,7 @@ public class produitRESTController {
     public void deleteProduit(@PathVariable("id") Long id){
         produitService.deleteProduitById(id);
     }
-    @RequestMapping(value = "/procat/{idCat}", method = RequestMethod.GET)
+    @RequestMapping(value = "/prodscat/{idCat}", method = RequestMethod.GET)
     public List<Produit> getProduitsByCatId(@PathVariable("idCat") Long idCat){
         return produitService.findByCategorieIdCat(idCat);
     }
