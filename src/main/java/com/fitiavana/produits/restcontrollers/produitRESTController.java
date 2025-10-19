@@ -3,6 +3,7 @@ package com.fitiavana.produits.restcontrollers;
 import com.fitiavana.produits.entities.Produit;
 import com.fitiavana.produits.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class produitRESTController {
     }
 
     @RequestMapping(path = "/addprod", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Produit createProduit(@RequestBody Produit produit) {
         return produitService.saveProduit(produit);
     }
