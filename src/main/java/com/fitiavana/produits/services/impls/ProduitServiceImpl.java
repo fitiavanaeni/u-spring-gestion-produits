@@ -2,11 +2,15 @@ package com.fitiavana.produits.services.impls;
 
 import com.fitiavana.produits.entities.Categorie;
 import com.fitiavana.produits.entities.Produit;
+import com.fitiavana.produits.repositories.ImageRepository;
 import com.fitiavana.produits.repositories.ProduitRepository;
 import com.fitiavana.produits.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -15,6 +19,9 @@ public class ProduitServiceImpl implements ProduitService {
     @Autowired
     ProduitRepository produitRepository;
 
+    @Autowired
+    ImageRepository imageRepository;
+
     @Override
     public Produit saveProduit(Produit p) {
         return produitRepository.save(p);
@@ -22,7 +29,13 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public Produit updateProduit(Produit p) {
-        return produitRepository.save(p);
+/*
+        Long oldProdImageId = this.getProduit(p.getIdProduit()).getImage().getIdImage();
+        Long newProdImageId = p.getImage().getIdImage();*/
+        Produit prodUpdated = produitRepository.save(p);
+        /*if (oldProdImageId != newProdImageId) //si l'image a été modifiée
+            imageRepository.deleteById(oldProdImageId);*/
+        return prodUpdated;
 
     }
 
@@ -33,6 +46,12 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Override
     public void deleteProduitById(Long id) {
+        Produit p = getProduit(id);
+        try {
+            Files.delete(Paths.get(System.getProperty("user.home")+"/images/"+p.getImagePath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         produitRepository.deleteById(id);
 
     }

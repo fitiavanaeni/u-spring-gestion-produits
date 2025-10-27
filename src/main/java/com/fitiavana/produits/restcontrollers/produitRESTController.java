@@ -27,7 +27,6 @@ public class produitRESTController {
     }
 
     @RequestMapping(path = "/addprod", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Produit createProduit(@RequestBody Produit produit) {
         return produitService.saveProduit(produit);
     }

@@ -3,6 +3,7 @@ package com.fitiavana.produits.entities;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Produit {
@@ -14,8 +15,31 @@ public class Produit {
     private Double prixProduit;
     private Date dateCreation;
 
+ /*   @OneToOne
+    private Image image;*/
+
+    @OneToMany (mappedBy = "produit")
+    private List<Image> images;
     @ManyToOne
     private Categorie categorie;
+
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
 
     public Produit() {
     }
@@ -26,6 +50,7 @@ public class Produit {
         this.dateCreation = dateCreation;
         this.categorie = categorie;
     }
+
 
     public Long getIdProduit() {
         return idProduit;
