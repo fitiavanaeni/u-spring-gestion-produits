@@ -4,6 +4,7 @@ import com.fitiavana.produits.entities.Image;
 import com.fitiavana.produits.entities.Produit;
 import com.fitiavana.produits.services.ImageService;
 import com.fitiavana.produits.services.ProduitService;
+import dto.ProduitDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,25 +26,25 @@ public class ImageRESTController {
     @Autowired
     ProduitService produitService;
 
-   @RequestMapping(value = "/uploadFS/{id}" , method = RequestMethod.POST)
+ /*  @RequestMapping(value = "/uploadFS/{id}" , method = RequestMethod.POST)
     public void uploadImageFS(@RequestParam("image") MultipartFile
                                       file,@PathVariable("id") Long id) throws IOException {
-        Produit p = produitService.getProduit(id);
+        ProduitDTO p = produitService.getProduit(id);
         p.setImagePath(id+".jpg");
 
         Files.write(Paths.get(System.getProperty("user.home")+"/images/"+p.getImagePath())
                 , file.getBytes());
         produitService.saveProduit(p);
 
-    }
-   @RequestMapping(value = "/loadfromFS/{id}" ,
+    }*/
+ /*  @RequestMapping(value = "/loadfromFS/{id}" ,
             method = RequestMethod.GET,
             produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getImageFS(@PathVariable("id") Long id) throws IOException {
 
-        Produit p = produitService.getProduit(id);
+        ProduitDTO p = produitService.getProduit(id);
         return	 Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images/"+p.getImagePath()));
-    }
+    }*/
 
     @PostMapping(value = "/uplaodImageProd/{idProd}" )
     public Image uploadMultiImages(@RequestParam("image")MultipartFile file, @PathVariable("idProd") Long idProd) throws IOException {

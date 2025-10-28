@@ -5,6 +5,9 @@ import com.fitiavana.produits.entities.Produit;
 import com.fitiavana.produits.repositories.ImageRepository;
 import com.fitiavana.produits.repositories.ProduitRepository;
 import com.fitiavana.produits.services.ProduitService;
+import dto.ProduitDTO;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProduitServiceImpl implements ProduitService {
@@ -21,18 +25,20 @@ public class ProduitServiceImpl implements ProduitService {
 
     @Autowired
     ImageRepository imageRepository;
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
-    public Produit saveProduit(Produit p) {
-        return produitRepository.save(p);
+    public ProduitDTO saveProduit(ProduitDTO produitDTO) {
+        return convertEntityToDto(produitRepository.save(convertDtoToEntity(produitDTO)));
     }
 
     @Override
-    public Produit updateProduit(Produit p) {
+    public ProduitDTO updateProduit(ProduitDTO produitDTO) {
 /*
         Long oldProdImageId = this.getProduit(p.getIdProduit()).getImage().getIdImage();
         Long newProdImageId = p.getImage().getIdImage();*/
-        Produit prodUpdated = produitRepository.save(p);
+        ProduitDTO prodUpdated = convertEntityToDto( produitRepository.save(convertDtoToEntity(produitDTO)));
         /*if (oldProdImageId != newProdImageId) //si l'image a été modifiée
             imageRepository.deleteById(oldProdImageId);*/
         return prodUpdated;
@@ -44,9 +50,9 @@ public class ProduitServiceImpl implements ProduitService {
         produitRepository.delete(p);
     }
 
-    @Override
+    /*@Override
     public void deleteProduitById(Long id) {
-        Produit p = getProduit(id);
+        ProduitDTO p = getProduit(id);
         try {
             Files.delete(Paths.get(System.getProperty("user.home")+"/images/"+p.getImagePath()));
         } catch (IOException e) {
@@ -54,16 +60,25 @@ public class ProduitServiceImpl implements ProduitService {
         }
         produitRepository.deleteById(id);
 
+    }*/
+
+    @Override
+    public ProduitDTO getProduit(Long id) {
+        return convertEntityToDto(produitRepository.findById(id).get());
     }
 
     @Override
-    public Produit getProduit(Long id) {
-        return produitRepository.findById(id).get();
-    }
+    public List<ProduitDTO> getAllProduits() {
+        return produitRepository.findAll().stream()
+                .map(this::convertEntityToDto).
+                collect(Collectors.toList());
 
-    @Override
-    public List<Produit> getAllProduits() {
-        return produitRepository.findAll();
+            //OU BIEN
+            /*List<Produit> prods = produitRepository.findAll();
+            List<ProduitDTO> listprodDto = new ArrayList<>(prods.size());
+            for (Produit p : prods)
+            listprodDto.add(convertEntityToDto(p));
+            return listprodDto;*/
     }
 
     @Override
@@ -99,5 +114,46 @@ public class ProduitServiceImpl implements ProduitService {
     @Override
     public List<Produit> trierProduitsNomsPrix() {
         return produitRepository.trierProduitsNomsPrix();
+    }
+
+    @Override
+    public ProduitDTO convertEntityToDto(Produit produit) {
+
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        ProduitDTO produitDTO = modelMapper.map(produit, ProduitDTO.class);
+
+        return  produitDTO;
+    /*    ProduitDTO produitDTO = new ProduitDTO();
+        produitDTO.setIdProduit(produit.getIdProduit());
+        produitDTO.setNomProduit(produit.getNomProduit());
+        produitDTO.setPrixProduit(produit.getPrixProduit()); produitDTO.setDateCreation(p.getDateCreation());
+        produitDTO.setCategorie(produit.getCategorie());
+        return produitDTO;*/
+
+        /*
+        return ProduitDTO.builder()
+        .idProduit(produit.getIdProduit())
+        .nomProduit(produit.getNomProduit())
+        .prixProduit(produit.getPrixProduit())
+        .dateCreation(produit.getDateCreation())
+        .categorie(produit.getCategorie())
+        .build();
+         */
+    }
+
+    @Override
+    public Produit convertDtoToEntity(ProduitDTO produitDto) {
+        Produit produit = new Produit();
+        produit = modelMapper.map(produitDto, Produit.class);
+        return  produit;
+
+        /*
+        produit.setIdProduit(produitDto.getIdProduit());
+        produit.setNomProduit(produitDto.getNomProduit());
+        produit.setPrixProduit(produitDto.getPrixProduit());
+        produit.setDateCreation(produitDto.getDateCreation());
+        produit.setCategorie(produitDto.getCategorie());
+        return produit;
+         */
     }
 }
