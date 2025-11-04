@@ -1,11 +1,9 @@
-package com.fitiavana.entities;
+package com.fitiavana.produits.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Produit {
@@ -17,14 +15,42 @@ public class Produit {
     private Double prixProduit;
     private Date dateCreation;
 
+ /*   @OneToOne
+    private Image image;*/
+
+    @OneToMany (mappedBy = "produit")
+    private List<Image> images;
+    @ManyToOne
+    private Categorie categorie;
+
+    private String imagePath;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
     public Produit() {
     }
 
-    public Produit(String nomProduit, Double prixProduit, Date dateCreation) {
+    public Produit(String nomProduit, Double prixProduit, Date dateCreation, Categorie categorie) {
         this.nomProduit = nomProduit;
         this.prixProduit = prixProduit;
         this.dateCreation = dateCreation;
+        this.categorie = categorie;
     }
+
 
     public Long getIdProduit() {
         return idProduit;
@@ -66,5 +92,13 @@ public class Produit {
                 ", prixProduit=" + prixProduit +
                 ", dateCreation=" + dateCreation +
                 '}';
+    }
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 }
